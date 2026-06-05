@@ -1,10 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { GameState, Player, TaskEventData, Theme } from '../types';
 import { loadFromStorage, saveToStorage } from '../utils/localStorage';
 import { generateSpiralPath, generateBoardMap, calculateNewPosition } from '../utils/gameLogic';
 import { DEFAULT_THEMES } from '../data/defaultThemes';
-
-const STORAGE_KEY = 'couples-ludo-game-state';
+import { STORAGE_KEY, WIN_STEP, REJECT_MIN_STEPS, REJECT_MAX_STEPS } from '../constants';
 
 const initialPlayers: Player[] = [
   { id: 0, name: '男方', color: '#0A84FF', role: 'male', step: 0, themeId: null },
@@ -132,8 +131,14 @@ export function useGameState() {
     };
   });
 
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
   useEffect(() => {
-    saveToStorage(STORAGE_KEY, state);
+    const timer = setTimeout(() => {
+      saveToStorage(STORAGE_KEY, stateRef.current);
+    }, 300);
+    return () => clearTimeout(timer);
   }, [state]);
 
   const switchView = useCallback((view: GameState['view']) => {
@@ -290,7 +295,7 @@ export function useGameState() {
     const activePlayer = state.players[state.turn];
     const opponent = state.players[state.turn === 0 ? 1 : 0];
 
-    if (landingStep === 80) {
+    if (landingStep === WIN_STEP) {
       return 'win';
     }
 
@@ -355,7 +360,7 @@ export function useGameState() {
       let nextPlayers = prev.players;
 
       if (outcome === 'reject') {
-        const backSteps = Math.floor(Math.random() * 3) + 1;
+        const backSteps = Math.floor(Math.random() * REJECT_MAX_STEPS) + REJECT_MIN_STEPS;
         nextPlayers = prev.players.map(p => {
           if (p.id !== task.executorPlayerId) return p;
 

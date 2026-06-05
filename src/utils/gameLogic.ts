@@ -1,7 +1,5 @@
 import { TileType, PathCoord } from '../types';
-
-const GRID_SIZE = 9;
-const TILES_COUNT = 81;
+import { GRID_SIZE, TILES_COUNT, WIN_STEP, LUCKY_COUNT, TRAP_COUNT, DICE_MIN, DICE_MAX } from '../constants';
 
 export function generateSpiralPath(): PathCoord[] {
   const path: PathCoord[] = [];
@@ -33,7 +31,7 @@ export function generateSpiralPath(): PathCoord[] {
 
 export function generateBoardMap(): TileType[] {
   const boardMap: TileType[] = new Array(TILES_COUNT).fill('blank');
-  
+
   const availableIndices = [];
   for (let i = 1; i < TILES_COUNT - 1; i++) {
     availableIndices.push(i);
@@ -44,10 +42,10 @@ export function generateBoardMap(): TileType[] {
     [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
   }
 
-  for (let i = 0; i < 27; i++) {
+  for (let i = 0; i < LUCKY_COUNT; i++) {
     boardMap[availableIndices[i]] = 'lucky';
   }
-  for (let i = 27; i < 54; i++) {
+  for (let i = LUCKY_COUNT; i < LUCKY_COUNT + TRAP_COUNT; i++) {
     boardMap[availableIndices[i]] = 'trap';
   }
 
@@ -57,13 +55,13 @@ export function generateBoardMap(): TileType[] {
 export function calculateNewPosition(current: number, steps: number): number {
   let target = current + steps;
 
-  if (target >= 80) {
-    target = 80 - (target - 80);
+  if (target >= WIN_STEP) {
+    target = WIN_STEP - (target - WIN_STEP);
   }
 
   return target;
 }
 
 export function rollDice(): number {
-  return Math.floor(Math.random() * 6) + 1;
+  return Math.floor(Math.random() * (DICE_MAX - DICE_MIN + 1)) + DICE_MIN;
 }

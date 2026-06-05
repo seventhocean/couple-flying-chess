@@ -4,6 +4,7 @@ import { GameBoard } from '../GameBoard';
 import { Dice } from '../Dice';
 import { calculateNewPosition, rollDice } from '../../utils/gameLogic';
 import { User, UserRound, ArrowLeft } from 'lucide-react';
+import { MOVE_STEP_DELAY, DICE_ROLL_DURATION } from '../../constants';
 
 interface GameViewProps {
   players: Player[];
@@ -50,7 +51,7 @@ export function GameView({
     setTimeout(() => {
       setDiceResult(result);
       onSetRolling(false);
-    }, 1000);
+    }, DICE_ROLL_DURATION);
   }, [isRolling, isMoving, diceResult, onSetRolling]);
 
   const handleRollComplete = useCallback(() => {
@@ -58,7 +59,7 @@ export function GameView({
       const landingStep = calculateNewPosition(players[currentTurn].step, diceResult);
       setIsMoving(true);
 
-      const moveDelayMs = 220;
+      const moveDelayMs = MOVE_STEP_DELAY;
       let movedSteps = 0;
 
       const stepOnce = () => {
