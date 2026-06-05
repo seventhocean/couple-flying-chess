@@ -80,8 +80,8 @@ export const GameBoard = memo(function GameBoard({ boardMap, pathCoords, players
   return (
     <div className="w-full max-w-[380px] aspect-square relative">
       <div
-        className="absolute inset-0 grid grid-cols-9"
-        style={{ gap: `${GAP_PX}px` }}
+        className="absolute inset-0 grid"
+        style={{ gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`, gap: `${GAP_PX}px` }}
       >
         {tiles}
       </div>

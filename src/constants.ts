@@ -1,5 +1,5 @@
 /** 棋盘网格边长 */
-export const GRID_SIZE = 9;
+export const GRID_SIZE = 11;
 
 /** 棋盘总格数 */
 export const TILES_COUNT = GRID_SIZE * GRID_SIZE;
@@ -7,14 +7,12 @@ export const TILES_COUNT = GRID_SIZE * GRID_SIZE;
 /** 胜利所需步数（最后一格的索引） */
 export const WIN_STEP = TILES_COUNT - 1;
 
-/** 幸运格数量 */
-export const LUCKY_COUNT = 27;
-
-/** 陷阱格数量 */
-export const TRAP_COUNT = 27;
+/** 各类型格子数量 */
+export const LUCKY_COUNT = 40;
+export const TRAP_COUNT = 40;
 
 /** 格子间像素间距 */
-export const GAP_PX = 4;
+export const GAP_PX = 3;
 
 /** 骰子点数范围 */
 export const DICE_MIN = 1;

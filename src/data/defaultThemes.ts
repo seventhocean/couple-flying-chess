@@ -215,7 +215,18 @@ const RAW_DEFAULT_THEMES: Omit<Theme, 'audience'>[] = [
   }
 ];
 
-export const DEFAULT_THEMES: Theme[] = RAW_DEFAULT_THEMES.map(theme => ({
+const ALL_TASKS = RAW_DEFAULT_THEMES.flatMap(theme => theme.tasks);
+
+const LEVEL_6_THEME: Omit<Theme, 'audience'> = {
+  id: 'allrandom',
+  name: '全随机挑战',
+  desc: '融合 1-5 级全部任务 (Level 6)',
+  tasks: ALL_TASKS
+};
+
+const THEMES_WITH_LEVEL_6 = [...RAW_DEFAULT_THEMES, LEVEL_6_THEME];
+
+export const DEFAULT_THEMES: Theme[] = THEMES_WITH_LEVEL_6.map(theme => ({
   ...theme,
   audience: 'common'
 }));

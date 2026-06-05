@@ -88,10 +88,10 @@ describe('calculateNewPosition', () => {
   });
 
   it('should bounce back from WIN_STEP when overshooting', () => {
-    // current=78, steps=4 → target=82, bounce: 80-(82-80)=78
-    expect(calculateNewPosition(78, 4)).toBe(78);
-    // current=79, steps=3 → target=82, bounce: 80-(82-80)=78
-    expect(calculateNewPosition(79, 3)).toBe(78);
+    // current=WIN_STEP-2, steps=4 → target=WIN_STEP+2, bounce: WIN_STEP-(WIN_STEP+2-WIN_STEP)=WIN_STEP-2
+    expect(calculateNewPosition(WIN_STEP - 2, 4)).toBe(WIN_STEP - 2);
+    // current=WIN_STEP-1, steps=3 → target=WIN_STEP+2, bounce: WIN_STEP-2
+    expect(calculateNewPosition(WIN_STEP - 1, 3)).toBe(WIN_STEP - 2);
   });
 
   it('should land exactly on WIN_STEP', () => {
