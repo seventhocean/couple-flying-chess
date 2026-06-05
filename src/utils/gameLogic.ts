@@ -1,7 +1,7 @@
 import { TileType, PathCoord } from '../types';
 
-const GRID_SIZE = 7;
-const TILES_COUNT = 49;
+const GRID_SIZE = 9;
+const TILES_COUNT = 81;
 
 export function generateSpiralPath(): PathCoord[] {
   const path: PathCoord[] = [];
@@ -44,10 +44,10 @@ export function generateBoardMap(): TileType[] {
     [availableIndices[i], availableIndices[j]] = [availableIndices[j], availableIndices[i]];
   }
 
-  for (let i = 0; i < 16; i++) {
+  for (let i = 0; i < 27; i++) {
     boardMap[availableIndices[i]] = 'lucky';
   }
-  for (let i = 16; i < 32; i++) {
+  for (let i = 27; i < 54; i++) {
     boardMap[availableIndices[i]] = 'trap';
   }
 
@@ -57,8 +57,8 @@ export function generateBoardMap(): TileType[] {
 export function calculateNewPosition(current: number, steps: number): number {
   let target = current + steps;
 
-  if (target >= 48) {
-    target = 48 - (target - 48);
+  if (target >= 80) {
+    target = 80 - (target - 80);
   }
 
   return target;

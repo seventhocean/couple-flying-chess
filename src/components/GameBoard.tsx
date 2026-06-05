@@ -8,6 +8,9 @@ interface GameBoardProps {
   currentTurn: number;
 }
 
+const GRID = 9;
+const GAP_PX = 4;
+
 export function GameBoard({ boardMap, pathCoords, players, currentTurn }: GameBoardProps) {
   const coordToIndex: Record<string, number> = {};
   pathCoords.forEach((coord, idx) => {
@@ -18,9 +21,9 @@ export function GameBoard({ boardMap, pathCoords, players, currentTurn }: GameBo
     const idx = coordToIndex[`${r},${c}`];
     const type = boardMap[idx];
     const isStart = idx === 0;
-    const isEnd = idx === 48;
+    const isEnd = idx === 80;
 
-    let className = 'relative w-full h-full rounded-xl flex items-center justify-center transition-colors duration-300';
+    let className = 'relative w-full h-full rounded-lg flex items-center justify-center transition-colors duration-300';
 
     if (isStart) {
       className += ' bg-white/10 border border-white/20';
@@ -36,23 +39,32 @@ export function GameBoard({ boardMap, pathCoords, players, currentTurn }: GameBo
 
     return (
       <div key={`${r}-${c}`} className={className}>
-        {isStart && <span className="text-[8px] font-bold text-gray-400">START</span>}
-        {isEnd && <Trophy className="text-[#FFD700]" size={18} />}
+        {isStart && <span className="text-[7px] font-bold text-gray-400">START</span>}
+        {isEnd && <Trophy className="text-[#FFD700]" size={14} />}
         {!isStart && !isEnd && type === 'lucky' && (
-          <Sparkles className="text-[#FF375F]" size={14} fill="currentColor" />
+          <Sparkles className="text-[#FF375F]" size={12} fill="currentColor" />
         )}
         {!isStart && !isEnd && type === 'trap' && (
-          <Bomb className="text-[#BF5AF2]" size={14} />
+          <Bomb className="text-[#BF5AF2]" size={12} />
         )}
       </div>
     );
   };
 
+  // 计算头像定位：精确对齐格子中心
+  // 格子实际宽度 = (boardSize - 8*gap) / 9
+  // 格子 i 的中心 = i * (tileWidth + gap) + tileWidth/2
+  const tileCenter = (i: number) =>
+    `calc(${(i / GRID) * 100}% + ${(i / GRID) * GAP_PX}px + ((100% - ${(GRID - 1) * GAP_PX}px) / ${GRID}) / 2)`;
+
   return (
-    <div className="w-full max-w-[360px] aspect-square relative">
-      <div className="absolute inset-0 grid grid-cols-7 gap-1.5">
-        {Array.from({ length: 7 }).map((_, r) =>
-          Array.from({ length: 7 }).map((_, c) => renderTile(r, c))
+    <div className="w-full max-w-[380px] aspect-square relative">
+      <div
+        className="absolute inset-0 grid grid-cols-9"
+        style={{ gap: `${GAP_PX}px` }}
+      >
+        {Array.from({ length: 9 }).map((_, r) =>
+          Array.from({ length: 9 }).map((_, c) => renderTile(r, c))
         )}
       </div>
 
@@ -62,36 +74,40 @@ export function GameBoard({ boardMap, pathCoords, players, currentTurn }: GameBo
           const playersOnSameTile = players.filter(p => p.step === player.step);
           const isOverlapping = playersOnSameTile.length > 1;
           const indexOnTile = playersOnSameTile.findIndex(p => p.id === player.id);
-          
-          let translate = 'translate(0, 0)';
+
+          let translate = 'translate(-50%, -50%)';
           if (isOverlapping) {
-            translate = indexOnTile === 0 ? 'translate(-4px, -4px)' : 'translate(4px, 4px)';
+            translate = indexOnTile === 0
+              ? 'translate(calc(-50% - 3px), calc(-50% - 3px))'
+              : 'translate(calc(-50% + 3px), calc(-50% + 3px))';
           }
 
           const isActive = player.id === currentTurn;
           const isMale = player.id === 0;
-          
+
           return (
-             <div
+            <div
               key={player.id}
-              className="absolute w-[14.28%] h-[14.28%] flex items-center justify-center transition-all duration-500 ease-in-out z-20"
+              className="absolute flex items-center justify-center transition-all duration-500 ease-in-out z-20"
               style={{
-                top: `${(coord.r / 7) * 100}%`,
-                left: `${(coord.c / 7) * 100}%`,
+                top: tileCenter(coord.r),
+                left: tileCenter(coord.c),
+                transform: translate,
+                width: 0,
+                height: 0,
               }}
             >
-              <div 
-                className={`relative flex items-center justify-center w-8 h-8 rounded-full shadow-lg transition-transform duration-300 ${isActive ? 'avatar-pulse scale-110' : ''}`}
-                style={{ 
+              <div
+                className={`relative flex items-center justify-center w-7 h-7 rounded-full shadow-lg transition-transform duration-300 ${isActive ? 'avatar-pulse scale-110' : ''}`}
+                style={{
                   backgroundColor: player.color,
-                  transform: translate,
                   border: '2px solid white'
                 }}
               >
                 {isMale ? (
-                  <User className="text-white w-5 h-5" />
+                  <User className="text-white w-4 h-4" />
                 ) : (
-                  <UserRound className="text-white w-5 h-5" />
+                  <UserRound className="text-white w-4 h-4" />
                 )}
               </div>
             </div>

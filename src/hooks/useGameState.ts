@@ -290,7 +290,7 @@ export function useGameState() {
     const activePlayer = state.players[state.turn];
     const opponent = state.players[state.turn === 0 ? 1 : 0];
 
-    if (landingStep === 48) {
+    if (landingStep === 80) {
       return 'win';
     }
 

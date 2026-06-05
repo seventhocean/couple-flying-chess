@@ -103,9 +103,9 @@ function App() {
         <header className="pt-12 pb-2 px-6 shrink-0 flex justify-between items-start">
           <div>
             <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-widest mb-1">
-              Couple's Game
+              Heartbeat Ludo
             </div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">情侣飞行棋</h1>
+            <h1 className="text-3xl font-bold text-white tracking-tight">心跳飞行棋</h1>
           </div>
           <div className="flex flex-col items-end gap-2 mt-1">
             <a

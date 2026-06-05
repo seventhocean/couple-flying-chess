@@ -91,7 +91,7 @@ export function GameView({
   }, [diceResult, players, currentTurn, onMove, onCheckTile, onWin, onTaskTrigger, onEndTurn]);
 
   const activePlayer = players[currentTurn];
-  const turnNumber = Math.floor(Math.max(...players.map(p => p.step)) / 4) + 1;
+  const turnNumber = Math.floor(Math.max(...players.map(p => p.step)) / 6) + 1;
 
   return (
     <div className="fixed inset-0 z-50 bg-black flex flex-col">

@@ -34,7 +34,7 @@ export function AiImportModal({ isOpen, themeName, onClose, onImport }: AiImport
 
   const prompt = useMemo(() => {
     const base = `# Role 
-你是一位深谙亲密关系心理学的“情侣游戏设计师”。你的专长是设计既能升温感情，又具有趣味性和互动性的飞行棋任务卡片。 
+你是一位深谙亲密关系心理学的”互动游戏设计师”。你的专长是设计既能升温感情，又具有趣味性和互动性的飞行棋任务卡片。 
 
  # Goal 
  请根据主题「${themeName}」生成 20 条可执行的飞行棋任务指令。 
@@ -43,7 +43,7 @@ export function AiImportModal({ isOpen, themeName, onClose, onImport }: AiImport
  1. **主题关联**：如果主题有意义，则任务必须深度契合「${themeName}」主题。 
  2. **行动导向**：指令必须是具体的行动，避免抽象概念。 
  3. **字数限制**：每条指令必须是中文，长度严格控制在 6 ~ 22 字之不能过长。 
- 4. **语气风格**：轻松、撩人、幽默或温馨，适合情侣互动。 
+ 4. **语气风格**：轻松、撩人、幽默或温馨，适合两人互动。 
  5. **禁忌**：禁止出现编号、Emoji 表情、Markdown 格式、解释性文字。 
  
  # Output Format 
